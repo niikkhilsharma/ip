@@ -7,7 +7,7 @@ import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
 const Page = () => {
 	const { isLoading, error, data } = useVisitorData()
 
-	async function saveData() {
+	async function saveData(fpHash) {
 		const response = await axios.post('/api/ip', { fpHash })
 		console.log(response.data)
 	}

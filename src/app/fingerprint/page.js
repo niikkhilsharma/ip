@@ -1,16 +1,11 @@
 'use client'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
-
-// import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
+import React from 'react'
 
 import FingerprintJS from '@fingerprintjs/fingerprintjs'
 
-const page = () => {
-	// const { isLoading, error, data, getData } = useVisitorData(
-	// 	{ extendedResult: true },
-	// 	{ immediate: true }
-	// )
+const Page = () => {
 	const [fpHash, setFpHash] = useState('')
 
 	useEffect(() => {
@@ -26,11 +21,11 @@ const page = () => {
 		setFp()
 	}, [])
 
-	async function saveData() {
-		const response = await axios.post('/api/ip', { fpHash })
-		console.log(response.data)
-	}
 	useEffect(() => {
+		async function saveData() {
+			const response = await axios.post('/api/ip', { fpHash })
+			console.log(response.data)
+		}
 		if (fpHash) {
 			saveData()
 		}
@@ -38,17 +33,6 @@ const page = () => {
 
 	return (
 		<div>
-			{/* <button onClick={() => getData({ ignoreCache: true })}>Reload data</button>
-			{isLoading ? (
-				'Loading...'
-			) : (
-				<>
-					{' '}
-					<p>VisitorId: {isLoading ? 'Loading...' : data?.visitorId}</p>
-					<p>Full visitor data:</p>
-					<pre>{error ? error.message : JSON.stringify(data, null, 2)}</pre>
-				</>
-			)} */}
 			<p className="font-bold underline">IP stored on the server</p>
 			Your Device Id:{fpHash}
 		</div>

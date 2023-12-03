@@ -1,42 +1,39 @@
 'use client'
-import { useState, useEffect } from 'react'
 import axios from 'axios'
 import React from 'react'
 
-import FingerprintJS from '@fingerprintjs/fingerprintjs'
+import { useVisitorData } from '@fingerprintjs/fingerprintjs-pro-react'
 
 const Page = () => {
-	const [fpHash, setFpHash] = useState('')
+	const { isLoading, error, data } = useVisitorData()
 
-	useEffect(() => {
-		const setFp = async () => {
-			const fp = await FingerprintJS.load()
+	async function saveData() {
+		const response = await axios.post('/api/ip', { fpHash })
+		console.log(response.data)
+	}
 
-			const { visitorId } = await fp.get()
+	if (isLoading) {
+		return <div>Loading...</div>
+	}
+	if (error) {
+		console.log(error)
+		return (
+			<div>
+				An error occured: {error.message} {JSON.stringify(error)}
+			</div>
+		)
+	}
 
-			setFpHash(visitorId)
-			console.log(visitorId)
-		}
-
-		setFp()
-	}, [])
-
-	useEffect(() => {
-		async function saveData() {
-			const response = await axios.post('/api/ip', { fpHash })
-			console.log(response.data)
-		}
-		if (fpHash) {
-			saveData()
-		}
-	}, [fpHash])
-
-	return (
-		<div>
-			<p className="font-bold underline">IP stored on the server</p>
-			Your Device Id:{fpHash}
-		</div>
-	)
+	if (data) {
+		saveData(data.visitorId)
+		return (
+			<div>
+				Welcome {data.visitorFound ? 'back' : ''}, {data.visitorId}!
+			</div>
+		)
+	} else {
+		return <>trying... to fetch it</>
+	}
 }
 
 export default Page

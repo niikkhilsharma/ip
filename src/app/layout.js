@@ -5,7 +5,9 @@ const inter = Inter({ subsets: ['latin'] })
 
 import { NextAuthProvider } from './Provider'
 
-// import { FpjsProvider } from '@fingerprintjs/fingerprintjs-pro-react'
+import {
+	FpjsProvider /* defaultEndpoint, defaultScriptUrlPattern */,
+} from '@fingerprintjs/fingerprintjs-pro-react'
 
 // export const metadata = {
 // 	title: 'Create Next App',
@@ -16,14 +18,13 @@ export default function RootLayout({ children }) {
 	return (
 		<html lang="en">
 			<NextAuthProvider>
-				{/* <FpjsProvider
+				<FpjsProvider
 					loadOptions={{
 						apiKey: 'EXUkcnTKp7DJJ1BeYIGB',
-						region: 'ap',
 					}}
-				> */}
-				<body className={inter.className}>{children}</body>
-				{/* </FpjsProvider> */}
+				>
+					<body className={inter.className}>{children}</body>
+				</FpjsProvider>
 			</NextAuthProvider>
 		</html>
 	)

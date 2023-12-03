@@ -20,9 +20,10 @@ export async function POST(req) {
 				{ new: true }
 			)
 			return NextResponse.json(ip)
+		} else {
+			const createdData = await NewIP.create({ IP: ip, visitorId: fpHash })
+			console.log('createdData', createdData)
 		}
-		const createdData = await NewIP.create({ IP: ip, visitorId: fpHash })
-		console.log('createdData', createdData)
 	} catch (error) {
 		console.log(error)
 	}
